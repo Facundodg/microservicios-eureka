@@ -1,0 +1,51 @@
+server:
+  port: 8081
+
+# ------------------------------ INICIO CONFIGURACIÓN SPRING BOOT ------------------------------
+spring:
+
+  datasource:
+    url: "jdbc:postgresql://db-products:9000/ms_products"
+    username: uncledave
+    password: Test123
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      schema: public
+      max-lifetime: 600000
+
+  sql:
+    init:
+      platform: postgres
+
+  jpa:
+    database: postgresql
+    properties:
+      hibernate:
+        lob:
+          non_contextual_creation: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 500
+        order_inserts: true
+    show-sql: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+
+logging:
+  level:
+    org:
+      springframework:
+      #        security: trace
+      # ---------------------------------------------------------
+
+      # PERMITE VISUALIZAR LOGS DE HIBERNATE EN LA CONSOLA
+      hibernate:
+        type:
+          descriptor:
+            sql:
+#              BasicBinder: trace
+# ---------------------------------------------------
+
+
+
