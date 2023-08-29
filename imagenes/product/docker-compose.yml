@@ -1,0 +1,57 @@
+version: '3'
+services:
+
+  ### Posgres database for Products
+  db-products:
+    container_name: db-products
+    image: postgres:15.2
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ms_products
+      POSTGRES_USER: uncledave
+      POSTGRES_PASSWORD: Test123
+    ports:
+      - 9000:9000
+    expose:
+      - 9000
+    command: -p 9000        
+    networks:
+      - my-network
+
+  ### adminer
+
+  adminer2:
+    container_name: adminer2
+    image: adminer
+    restart: always
+    depends_on:
+      - db-products
+    ports:
+      - 9082:8080
+
+  ### servicios 
+
+  product:
+    container_name: productos
+    image: product:0.0.3
+    restart: unless-stopped
+    ports:
+      - 8081:8081
+    depends_on:
+      - db-products        
+    networks:
+      - my-network
+
+  website:
+    image: nginx
+    container_name: website
+    ports:
+      - "8080:80"
+    volumes:
+      - ./front:/usr/share/nginx/html
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
